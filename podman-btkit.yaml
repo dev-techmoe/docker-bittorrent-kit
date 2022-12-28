@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: btkit
+
+spec:
+  containers:
+    - name: qbittorrent
+      image: docker.io/linuxserver/qbittorrent
+      ports:
+        - hostPort: 30666
+          containerPort: 30666
+        - hostPort: 30666
+          containerPort: 30666
+          protocol: UDP
+      volumeMounts:
+        - name: qbt-config
+          mountPath: /config
+        - name: qbt-downloads
+          mountPath: /downloads
+    - name: qbitorrent-ee
+      image: docker.io/p3terx/qbittorrent-enhanced
+      ports:
+        - hostPort: 30667
+          containerPort: 30667
+        - hostPort: 30667
+          containerPort: 30667
+          protocol: UDP
+      volumeMounts:
+        - name: qbt-ee-config
+          mountPath: /qBittorrent
+        - name: qbt-ee-downloads
+          mountPath: /downloads
+    - name: caddy
+      image: ghcr.io/dev-techmoe/action-caddy-builder:latest
+      ports:
+        - hostPort: 38080
+          containerPort: 8090
+      volumeMounts:
+        - name: caddy-config
+          mountPath: /etc/caddy
+        - name: downloads
+          mountPath: /downloads
+  volumes:
+    # caddy
+    - name: caddy-data
+      hostPath:
+        path: ./data/caddy
+    - name: caddy-config
+      hostPath:
+        path: ./config/caddy
+    - name: downloads
+      hostPath:
+        path: ./downloads
+    # qbittorrent
+    - name: qbt-config
+      hostPath:
+        path: ./config/qbt
+    - name: qbt-downloads
+      hostPath:
+        path: ./downloads/qbt-downloads
+    # qbittorrent enhanced edition
+    - name: qbt-ee-config
+      hostPath:
+        path: ./config/qbt-ee
+    - name: qbt-ee-downloads
+      hostPath:
+        path: ./downloads/qbt-ee-downloads

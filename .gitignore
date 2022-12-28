@@ -1,0 +1,14 @@
+config/*
+!config/caddy
+
+config/qbt/*
+!config/qbt
+!config/qbt/qBittorrent
+config/qbt/qBittorrent/*
+!config/qbt/qBittorrent/qBittorrent.conf
+
+config/qbt-ee/*
+!config/qbt-ee
+!config/qbt-ee/config
+config/qbt-ee/config/*
+!config/qbt-ee/config/qBittorrent.conf

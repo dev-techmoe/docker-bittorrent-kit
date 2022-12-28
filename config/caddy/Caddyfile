@@ -1,0 +1,32 @@
+:8090 {
+    route /qbt* {
+        uri strip_prefix /qbt
+        reverse_proxy http://localhost:8080 {
+            header_up -Origin
+        }
+    }
+    redir /qbt /qbt/
+
+    route /qbt-ee* {
+        uri strip_prefix /qbt-ee
+        reverse_proxy http://localhost:28080 {
+            header_up -Origin
+        }
+    }
+    redir /qbt-ee /qbt-ee/
+
+    route /downloads* {
+        uri strip_prefix /downloads
+        file_server {
+            root /downloads
+            browse
+        }
+    }
+    redir /downloads /downloads/
+
+    route / {
+        file_server {
+            root /etc/caddy/static
+        }
+    }
+}
