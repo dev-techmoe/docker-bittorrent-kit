@@ -1,5 +1,10 @@
 :8090 {
+	basicauth /* {
+		admin JDJhJDE0JEZlQ2MyRDNqWnJ6QTFnZGJlNHVOMy5jMDhhVXFhZWt0bjEyeFlTeGhMbGRJTnUuTFc2NFJH
+	}
+
     route /qbt* {
+
         uri strip_prefix /qbt
         reverse_proxy http://localhost:8080 {
             header_up -Origin
