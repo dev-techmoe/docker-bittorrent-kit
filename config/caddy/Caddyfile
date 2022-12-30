@@ -1,10 +1,17 @@
-:8090 {
-	basicauth /* {
+(authRequired) {
+	basicauth * {
 		admin JDJhJDE0JEZlQ2MyRDNqWnJ6QTFnZGJlNHVOMy5jMDhhVXFhZWt0bjEyeFlTeGhMbGRJTnUuTFc2NFJH
 	}
+}
+
+:8090 {
+
+    route /ping {
+        respond "pone"
+    }
 
     route /qbt* {
-
+        import authRequired
         uri strip_prefix /qbt
         reverse_proxy http://localhost:8080 {
             header_up -Origin
@@ -13,6 +20,7 @@
     redir /qbt /qbt/
 
     route /qbt-ee* {
+        import authRequired
         uri strip_prefix /qbt-ee
         reverse_proxy http://localhost:28080 {
             header_up -Origin
@@ -21,6 +29,7 @@
     redir /qbt-ee /qbt-ee/
 
     route /downloads* {
+        import authRequired
         uri strip_prefix /downloads
         file_server {
             root /downloads
@@ -30,6 +39,7 @@
     redir /downloads /downloads/
 
     route / {
+        import authRequired
         file_server {
             root /etc/caddy/static
         }
